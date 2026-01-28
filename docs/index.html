@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ActDetect Notebooks</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 20px; }
+    .row { display: flex; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+    a { text-decoration: none; }
+    iframe { width: 100%; height: 85vh; border: 1px solid #ddd; border-radius: 8px; }
+    select { padding: 6px 10px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h2>ActDetect — Notebook Previews</h2>
+  <p>
+    These previews are rendered via <code>nbviewer</code>. Interactive widgets (e.g., the manual QA UI) may not run.
+  </p>
+
+  <div class="row">
+    <label for="nb">Choose a notebook:</label>
+    <select id="nb" onchange="loadNB()">
+      <option value="notebooks/07_model_compare_paris.ipynb.ipynb">07 Paris model comparison</option>
+      <option value="notebooks/08_uk_transfer_hybrid.ipynb">08 UK transfer (hybrid)</option>
+      <option value="notebooks/08.1_anchor_consolidation.ipynb">08.1 Anchor consolidation</option>
+      <option value="notebooks/04_data_compare.ipynb">04 Data comparison</option>
+      <option value="notebooks/09_maunal_check_ui.ipynb">09 Manual check UI (widgets may not render)</option>
+    </select>
+  </div>
+
+  <iframe id="frame" src=""></iframe>
+
+  <script>
+    function loadNB() {
+      const nb = document.getElementById("nb").value;
+      const url = "https://nbviewer.org/github/PangYanbo/ActDetect/blob/main/" + nb;
+      document.getElementById("frame").src = url;
+    }
+    loadNB();
+  </script>
+</body>
+</html>
