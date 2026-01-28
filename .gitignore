@@ -1,0 +1,53 @@
+# macOS
+.DS_Store
+
+# Jupyter / Python
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+*.pyo
+
+# Environments
+.venv/
+venv/
+.env
+.conda/
+*.conda
+*.lock
+
+# Large outputs / generated artifacts
+outputs/
+prev/
+
+# Data assets (keep structure but not the data)
+assets/**
+!assets/README.md
+!assets/.gitkeep
+
+# Parquet / Arrow / large tables
+*.parquet
+*.feather
+*.arrow
+*.pkl
+*.joblib
+
+# GIS / OSM / large geodata
+*.pbf
+*.osm
+*.geojson
+*.gpkg
+*.shp
+*.shx
+*.dbf
+*.tif
+*.tiff
+
+# Compressed / archives
+*.zip
+*.gz
+*.7z
+*.tar
+*.tar.gz
+
+# Logs
+*.log
