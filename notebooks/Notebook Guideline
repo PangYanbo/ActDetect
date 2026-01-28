@@ -1,0 +1,84 @@
+0) Setup
+	•	notebooks/00_setup_temp.ipynb
+	•	Purpose: templates for import/test.
+
+1) Paris: build stays (ground truth)
+	•	notebooks/01_paris_build_stays.ipynb
+	•	Purpose: build stay-level records from the Paris trip dataset; map purposes to 7 classes.
+	•	Key outputs (to outputs/data/):
+	•	paris_stays_train.parquet
+	•	paris_stays_valid.parquet
+
+2) UK: extract stays + cohort selection
+	•	notebooks/02_uk_extract_stays.ipynb
+	•	Purpose: extract stays for London-region users; apply residency-oriented cohort filters.
+	•	Key outputs:
+	•	uk_london_stays_1w_*.parquet
+	•	uk_london_stays_1m_*.parquet
+	•	uk_london_stays_3m_*.parquet
+
+3) POIs: build features (Huff-style buffer)
+	•	notebooks/03_poi_build.ipynb (POI parsing / categorisation)
+	•	notebooks/03_poi_build_huff.ipynb (Huff-style aggregation via H3 neighbourhood decay)
+	•	Purpose: build comparable POI features for Paris & UK.
+	•	Key outputs:
+	•	paris_poi_huff_*.parquet
+	•	uk_poi_huff_*.parquet
+
+4) Data QA / comparison
+	•	notebooks/04_data_compare.ipynb
+	•	Purpose: compare regularity/temporal distributions between Paris and London; produce QA figures.
+
+5) Rule-based baseline (Paris)
+	•	notebooks/05_baseline1_paris.ipynb
+	•	Purpose: implement rule-based labelling baseline; evaluate on Paris valid.
+	•	Key outputs:
+	•	paris_valid_pred_rulebased.parquet
+	•	row-normalised confusion matrix CSV/figures (in outputs/)
+
+6) HMM priors / sequential baseline (Paris)
+	•	notebooks/06_hmm_paris_priors.ipynb
+	•	Purpose: engineered-evidence HMM + tuning on Paris.
+	•	Key outputs:
+	•	paris_valid_pred_hmm.parquet
+	•	cm_hmm_paris_*.csv (row-normalised CMs)
+
+7) Supervised per-stay classifier (Paris)
+	•	notebooks/06.5_paris_supervised_baseline_gbdt_mlp.ipynb
+	•	Purpose: train supervised per-stay model (GBDT/MLP) on Paris train; validate on Paris valid.
+	•	Key outputs:
+	•	models/paris_gbdt_baseline.joblib
+	•	paris_valid_pred_gbdt.parquet
+
+8) Hybrid (Paris): classifier likelihoods + HMM smoothing
+	•	notebooks/06.6_paris_hybrid_hmm_gbdt_emission.ipynb
+	•	Purpose: hybrid decoding with logB = log(p)/T; tune T; export predictions.
+	•	Key outputs:
+	•	paris_valid_pred_hybrid.parquet
+
+9) Paris: model comparison & paper figures
+	•	notebooks/07_model_compare_paris.ipynb.ipynb (rename recommended → 07_model_compare_paris.ipynb)
+	•	Purpose: compare Rule-based vs HMM vs GBDT vs Hybrid; export tables/figures for the paper.
+	•	Key outputs:
+	•	summary tables (ACC/Macro/Macro_weak)
+	•	figures (motifs, hourly distributions, module gain, etc.)
+
+10) UK transfer (London): Hybrid + self-profile
+	•	notebooks/08_uk_transfer_hybrid.ipynb
+	•	Purpose: apply Paris-trained classifier to UK stays; learn UK transitions; decode; iterative self-profiling; proxy diagnostics.
+	•	Key outputs:
+	•	uk_1w_pred_{gbdt,hmm,hybrid}.parquet
+	•	uk_1m_pred_{gbdt,hmm,hybrid}.parquet (if run)
+	•	uk_3m_pred_{gbdt,hybrid}.parquet (if run)
+
+11) Anchor consolidation (OD-ready)
+	•	notebooks/08.1_anchor_consolidation.ipynb
+	•	Purpose: derive unique primary home/work anchors and OD-normalised labels (non-primary HOME/WORK → OTHER).
+	•	Key outputs:
+	•	uk_1w_pred_hybrid_od.parquet (and 1M/3M if run)
+	•	commute OD pair tables (CSV) in outputs/tables/
+
+12) Manual QA UI (timeline + map)
+	•	notebooks/09_maunal_check_ui.ipynb (rename recommended → 09_manual_check_ui.ipynb)
+	•	Purpose: interactive manual review across models/horizons/users; timeline + map.
+	•	Inputs: uk_*_pred_*.parquet files in outputs/data/
