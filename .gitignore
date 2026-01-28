@@ -16,7 +16,16 @@ venv/
 *.lock
 
 # Large outputs / generated artifacts
-outputs/
+# Outputs: keep figures/tables, ignore large data
+outputs/data/
+outputs/models/
+outputs/**/*.parquet
+outputs/**/*.pbf
+outputs/**/*.joblib
+outputs/**/*.pkl
+outputs/**/*.gz
+outputs/**/*.zip
+outputs/**/*.tar*
 prev/
 
 # Data assets (keep structure but not the data)
